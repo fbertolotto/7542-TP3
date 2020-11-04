@@ -21,6 +21,6 @@ class Socket {
   int accept_client(Socket& client);
   int connect_to_sv();
   int send_msg(std::string msg, int len);
-  int recv_msg(char* buffer, int len);
+  int recv_msg(std::string& buffer);
   ~Socket();
 };

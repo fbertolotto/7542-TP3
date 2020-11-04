@@ -2,6 +2,7 @@
 
 #include <cstring>
 #include <iostream>
+#include <vector>
 
 Socket::Socket() {}
 
@@ -91,8 +92,14 @@ int Socket::send_msg(std::string msg, int len) {
   return 0;
 }
 
-int Socket::recv_msg(char* buffer, int len) {
-  return recv(file_d, buffer, len, 0);
+int Socket::recv_msg(std::string& buffer) {
+  int bytes;
+  do {
+    std::vector<char> tmp_buf(64);
+    bytes = recv(file_d, tmp_buf.data(), tmp_buf.size(), 0);
+    buffer.append(tmp_buf.begin(), tmp_buf.end());
+  } while (bytes > 0);
+  return bytes;
 }
 
 Socket::~Socket() { close(file_d); }
