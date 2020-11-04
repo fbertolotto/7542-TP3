@@ -3,26 +3,23 @@
 #include <sstream>
 #include <string>
 
-#include "socket.h"
+#include "client_handler.h"
 
 #define QUEUE_SIZE 10
 
 int main() {
+  Socket sv("8080", QUEUE_SIZE);
+  Socket client;
+  Resources resultados;
+
+  sv.accept_client(client);
+  std::cout << "Resultado final:\n";
+  ClientHandler(client, resultados);
+
   /*
     Socket client("localhost", "8080");
     client.connect_to_sv();
-    client.send_msg("WACHIN", 6);
+    client.send_msg(msg, msg.size());
   */
-
-  /*
-    char buffer[65];
-    memset(&buffer, 0, sizeof(char) * 65);
-    Socket sv("8080", QUEUE_SIZE);
-    Socket client;
-    sv.accept_client(client);
-
-    client.recv_msg(buffer, 64);
-
-    std::cout << buffer << "\n";
-  */
+  return 0;
 }
