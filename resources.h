@@ -10,4 +10,5 @@ class Resources {
  public:
   void add_resource(std::string resource, std::string body);
   std::string get_resource(std::string resource);
+  void show_all();
 };
