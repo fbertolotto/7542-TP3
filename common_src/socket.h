@@ -15,25 +15,18 @@ class Socket {
   int _start();
   int _bind();
   int _listen(int queue_size);
-  void send_size(std::uint32_t len);
-  std::uint32_t recv_size();
 
  public:
   Socket(const char* host, const char* port);
   Socket(const char* port, int queue);
   Socket();
+  void stop_sending();
   int accept_client(Socket& client);
   int connect_to_sv();
-  int send_msg(std::string msg, std::uint32_t len);
+  int send_msg(std::string msg, int len);
   int recv_msg(std::string& buffer);
 
-  Socket(Socket&& other) { this->file_d = std::move(other.file_d); }
-
-  Socket& operator=(Socket&& other) {
-    this->file_d = std::move(other.file_d);
-    other.file_d = -1;
-    return *this;
-  }
-
+  Socket(Socket&& other);
+  Socket& operator=(Socket&& other);
   ~Socket();
 };

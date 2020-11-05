@@ -29,6 +29,7 @@ void ClientHandler::execute_method() {
     delete msg;
   }
   sk.send_msg(response, response.size());
+  sk.stop_sending();
 }
 
 void ClientHandler::send_to_client(std::string msg) {

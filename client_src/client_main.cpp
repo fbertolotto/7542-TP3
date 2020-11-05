@@ -8,6 +8,7 @@ int main(int argc, char** argv) {
   std::string c1 = argv[1];
   std::string msg = c1 + " /root HTTP1.1\n\nHOLA!";
   client.send_msg(msg, msg.size());
+  client.stop_sending();
   std::string buffer;
   client.recv_msg(buffer);
   std::cout << buffer;

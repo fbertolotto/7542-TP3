@@ -26,6 +26,14 @@ Socket::Socket(const char* host, const char* port) {
   _start();
 }
 
+Socket::Socket(Socket&& other) { this->file_d = std::move(other.file_d); }
+
+Socket::Socket& operator=(Socket&& other) {
+  this->file_d = std::move(other.file_d);
+  other.file_d = -1;
+  return *this;
+}
+
 void Socket::_set_net_flags(struct addrinfo* hints) {
   memset(hints, 0, sizeof(struct addrinfo));
   hints->ai_family = AF_INET;
@@ -82,18 +90,7 @@ int Socket::connect_to_sv() {
   return 0;
 }
 
-void Socket::send_size(std::uint32_t len) {
-  size_t total_bytes = 0;
-  while (total_bytes < sizeof(std::uint32_t)) {
-    int bytes = send(file_d, &((char*)&len)[total_bytes],
-                     sizeof(std::uint32_t) - total_bytes, MSG_NOSIGNAL);
-    if (bytes == -1) return;
-    total_bytes += bytes;
-  }
-}
-
-int Socket::send_msg(std::string msg, std::uint32_t len) {
-  send_size(len);
+int Socket::send_msg(std::string msg, int len) {
   size_t total_bytes = 0;
   while (total_bytes < len) {
     int bytes =
@@ -104,30 +101,18 @@ int Socket::send_msg(std::string msg, std::uint32_t len) {
   return 0;
 }
 
-std::uint32_t Socket::recv_size() {
-  std::uint32_t len;
-  size_t total_bytes = 0;
-  while (total_bytes < sizeof(std::uint32_t)) {
-    int bytes = recv(file_d, &((char*)&len)[total_bytes],
-                     sizeof(std::uint32_t) - total_bytes, 0);
-    if (bytes == -1) return 1;
-    total_bytes += bytes;
-  }
-  return len;
-}
-
 int Socket::recv_msg(std::string& buffer) {
-  std::uint32_t len = recv_size();
-  size_t total_bytes = 0;
-  while (total_bytes < len) {
+  int bytes = 1;
+  while (bytes > 0) {
     std::vector<char> tmp_buf(64);
-    int bytes = recv(file_d, tmp_buf.data(), tmp_buf.size(), 0);
+    bytes = recv(file_d, tmp_buf.data(), tmp_buf.size(), 0);
     if (bytes == -1) return 1;
     buffer.append(tmp_buf.begin(), tmp_buf.end());
-    total_bytes += bytes;
   }
   return 0;
 }
+
+void Socket::stop_sending() { shutdown(file_d, SHUT_WR); }
 
 Socket::~Socket() {
   if (file_d != -1) {
