@@ -4,6 +4,7 @@
 #include <unistd.h>
 
 #include <cstring>
+#include <iostream>
 #include <string>
 
 class Socket {
@@ -25,5 +26,14 @@ class Socket {
   int connect_to_sv();
   int send_msg(std::string msg, std::uint32_t len);
   int recv_msg(std::string& buffer);
+
+  Socket(Socket&& other) { this->file_d = std::move(other.file_d); }
+
+  Socket& operator=(Socket&& other) {
+    this->file_d = std::move(other.file_d);
+    other.file_d = -1;
+    return *this;
+  }
+
   ~Socket();
 };

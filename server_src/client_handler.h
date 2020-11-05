@@ -1,12 +1,14 @@
 #include "../common_src/socket.h"
 #include "protocol_processor.h"
 #include "resources.h"
+#include "thread.h"
 
-class ClientHandler {
+class ClientHandler : public Thread {
  private:
-  Socket& sk;
+  Socket sk;
   Resources& resources;
   ProtocolProcessor pp;
+  bool finished = false;
   bool validate();
   void execute_method();
   void send_to_client(std::string msg);
@@ -14,4 +16,6 @@ class ClientHandler {
  public:
   ClientHandler(Socket& client, Resources& res);
   void run();
+  bool finish() { return finished; }
+  ~ClientHandler() {}
 };

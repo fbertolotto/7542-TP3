@@ -2,9 +2,8 @@
 
 #include <iostream>
 
-ClientHandler::ClientHandler(Socket& client, Resources& res)
-    : sk(client), resources(res) {
-  run();
+ClientHandler::ClientHandler(Socket& client, Resources& res) : resources(res) {
+  sk = std::move(client);
 }
 
 void ClientHandler::run() {
@@ -18,7 +17,8 @@ void ClientHandler::run() {
     std::cout << "ES INVALIDO\n";
     sk.send_msg("ERROR\n", 6);
   }
-  resources.show_all();
+  // resources.show_all();
+  finished = true;
 }
 
 bool ClientHandler::validate() {

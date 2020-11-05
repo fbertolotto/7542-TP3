@@ -129,4 +129,8 @@ int Socket::recv_msg(std::string& buffer) {
   return 0;
 }
 
-Socket::~Socket() { close(file_d); }
+Socket::~Socket() {
+  if (file_d != -1) {
+    close(file_d);
+  }
+}
