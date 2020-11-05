@@ -31,7 +31,13 @@ void ClientHandler::execute_method() {
 
     /* GET RECURSO */
   } else if (method == "GET" && resource != "/") {
-    send_to_client(resource);
+    std::string body = resources.get_resource(resource);
+    if (body.size() == 0) {
+      std::string error = "HTTP 404 NOT FOUND\n\n";
+      sk.send_msg(error, error.size());
+    } else {
+      send_to_client(body);
+    }
 
     /* POST ROOT */
   } else if (method == "POST" && resource == "/") {

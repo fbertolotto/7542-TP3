@@ -14,18 +14,11 @@ void ProtocolProcessor::start(std::vector<std::string> lines) {
   set_command(lines[0]);
   for (size_t i = 1; i < lines.size(); i++) {
     std::string line = lines[i];
-    if (body)
+    if (body && commands[0] == "POST")
       set_body(line);
     else if (!line.length())
       body = true;
   }
-}
-
-void ProtocolProcessor::show_all() {
-  std::string first_line =
-      get_method() + " " + get_resource() + " " + get_protocol() + "\n";
-  std::cout << first_line;
-  std::cout << get_body() << "\n";
 }
 
 std::string ProtocolProcessor::get_method() { return commands[0]; }

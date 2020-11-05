@@ -14,7 +14,6 @@ class ProtocolProcessor {
 
  public:
   void process(std::string msg);
-  void show_all();
   std::string get_method();
   std::string get_resource();
   std::string get_protocol();
