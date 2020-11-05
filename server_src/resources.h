@@ -1,3 +1,6 @@
+#ifndef RESOURCES
+#define RESOURCES
+
 #include <map>
 #include <mutex>
 #include <string>
@@ -12,3 +15,5 @@ class Resources {
   std::string get_resource(std::string resource);
   void show_all();
 };
+
+#endif
