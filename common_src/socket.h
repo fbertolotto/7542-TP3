@@ -3,6 +3,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#include <cstring>
 #include <string>
 
 class Socket {
@@ -13,6 +14,8 @@ class Socket {
   int _start();
   int _bind();
   int _listen(int queue_size);
+  void send_size(std::uint32_t len);
+  std::uint32_t recv_size();
 
  public:
   Socket(const char* host, const char* port);
@@ -20,7 +23,7 @@ class Socket {
   Socket();
   int accept_client(Socket& client);
   int connect_to_sv();
-  int send_msg(std::string msg, int len);
+  int send_msg(std::string msg, std::uint32_t len);
   int recv_msg(std::string& buffer);
   ~Socket();
 };

@@ -1,5 +1,6 @@
 #include "socket.h"
 
+#include <cstdint>
 #include <cstring>
 #include <iostream>
 #include <vector>
@@ -81,8 +82,19 @@ int Socket::connect_to_sv() {
   return 0;
 }
 
-int Socket::send_msg(std::string msg, int len) {
-  int total_bytes = 0;
+void Socket::send_size(std::uint32_t len) {
+  size_t total_bytes = 0;
+  while (total_bytes < sizeof(std::uint32_t)) {
+    int bytes = send(file_d, &((char*)&len)[total_bytes],
+                     sizeof(std::uint32_t) - total_bytes, MSG_NOSIGNAL);
+    if (bytes == -1) return;
+    total_bytes += bytes;
+  }
+}
+
+int Socket::send_msg(std::string msg, std::uint32_t len) {
+  send_size(len);
+  size_t total_bytes = 0;
   while (total_bytes < len) {
     int bytes =
         send(file_d, &msg[total_bytes], len - total_bytes, MSG_NOSIGNAL);
@@ -92,14 +104,29 @@ int Socket::send_msg(std::string msg, int len) {
   return 0;
 }
 
+std::uint32_t Socket::recv_size() {
+  std::uint32_t len;
+  size_t total_bytes = 0;
+  while (total_bytes < sizeof(std::uint32_t)) {
+    int bytes = recv(file_d, &((char*)&len)[total_bytes],
+                     sizeof(std::uint32_t) - total_bytes, 0);
+    if (bytes == -1) return 1;
+    total_bytes += bytes;
+  }
+  return len;
+}
+
 int Socket::recv_msg(std::string& buffer) {
-  int bytes;
-  do {
+  std::uint32_t len = recv_size();
+  size_t total_bytes = 0;
+  while (total_bytes < len) {
     std::vector<char> tmp_buf(64);
-    bytes = recv(file_d, tmp_buf.data(), tmp_buf.size(), 0);
+    int bytes = recv(file_d, tmp_buf.data(), tmp_buf.size(), 0);
+    if (bytes == -1) return 1;
     buffer.append(tmp_buf.begin(), tmp_buf.end());
-  } while (bytes > 0);
-  return bytes;
+    total_bytes += bytes;
+  }
+  return 0;
 }
 
 Socket::~Socket() { close(file_d); }

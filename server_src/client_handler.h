@@ -1,6 +1,6 @@
+#include "../common_src/socket.h"
 #include "protocol_processor.h"
 #include "resources.h"
-#include "socket.h"
 
 class ClientHandler {
  private:

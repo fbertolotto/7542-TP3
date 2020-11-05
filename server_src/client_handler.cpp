@@ -14,6 +14,9 @@ void ClientHandler::run() {
   if (validate()) {
     std::cout << "ES VALIDO\n";
     execute_method();
+  } else {
+    std::cout << "ES INVALIDO\n";
+    sk.send_msg("ERROR\n", 6);
   }
   resources.show_all();
 }
@@ -36,6 +39,7 @@ void ClientHandler::execute_method() {
   std::string method = pp.get_method();
   if (method == "POST") {
     resources.add_resource(pp.get_resource(), pp.get_body());
+    sk.send_msg("TODO OK\n", 8);
   } else {
     std::string resource = resources.get_resource(pp.get_resource());
     send_to_client(resource);
@@ -45,5 +49,5 @@ void ClientHandler::execute_method() {
 void ClientHandler::send_to_client(std::string msg) {
   std::string success = "HTTP 200 OK\n\n";
   success.append(msg);
-  sk.send_msg(success);
+  sk.send_msg(success, success.size());
 }

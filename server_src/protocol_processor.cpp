@@ -24,7 +24,6 @@ void ProtocolProcessor::start(std::vector<std::string> lines) {
 void ProtocolProcessor::show_all() {
   std::string first_line =
       get_method() + " " + get_resource() + " " + get_protocol() + "\n";
-
   std::cout << first_line;
   std::cout << get_body() << "\n";
 }

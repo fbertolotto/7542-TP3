@@ -10,16 +10,11 @@
 int main() {
   Socket sv("8080", QUEUE_SIZE);
   Socket client;
+  Socket client2;
   Resources resultados;
-
   sv.accept_client(client);
-  std::cout << "Resultado final:\n";
   ClientHandler(client, resultados);
-
-  /*
-    Socket client("localhost", "8080");
-    client.connect_to_sv();
-    client.send_msg(msg, msg.size());
-  */
+  sv.accept_client(client2);
+  ClientHandler(client2, resultados);
   return 0;
 }
