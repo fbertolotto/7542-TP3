@@ -9,9 +9,9 @@ class ClientHandler : public Thread {
   Resources& resources;
   ProtocolProcessor pp;
   bool finished = false;
-  bool validate();
   void execute_method();
   void send_to_client(std::string msg);
+  void show_command();
 
  public:
   ClientHandler(Socket& client, Resources& res);
