@@ -28,7 +28,7 @@ Socket::Socket(const char* host, const char* port) {
 
 Socket::Socket(Socket&& other) { this->file_d = std::move(other.file_d); }
 
-Socket::Socket& operator=(Socket&& other) {
+Socket& Socket::operator=(Socket&& other) {
   this->file_d = std::move(other.file_d);
   other.file_d = -1;
   return *this;
@@ -91,7 +91,7 @@ int Socket::connect_to_sv() {
 }
 
 int Socket::send_msg(std::string msg, int len) {
-  size_t total_bytes = 0;
+  int total_bytes = 0;
   while (total_bytes < len) {
     int bytes =
         send(file_d, &msg[total_bytes], len - total_bytes, MSG_NOSIGNAL);
