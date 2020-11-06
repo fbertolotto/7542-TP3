@@ -22,6 +22,7 @@ class ClientHandler : public Thread {
   ClientHandler(Socket& client, Resources& res);
   void run();
   bool finish() { return finished; }
+  void stop();
   ~ClientHandler() {}
 };
 

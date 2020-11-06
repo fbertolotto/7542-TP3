@@ -5,22 +5,36 @@
 Accepter::Accepter(Socket& sk) : sv(sk) {}
 
 void Accepter::run() {
-  do {
+  while (keep_accepting) {
     Socket client = Socket();
-    sv.accept_client(client);
+    if (sv.accept_client(client)) continue;
     ClientHandler* handler = new ClientHandler(client, resources);
     handlers.push_back(handler);
     handler->start();
-
-    for (auto handler : handlers) {
-      if (handler->finish()) {
-        handler->join();
-        delete handler;
-        auto position = std::find(handlers.begin(), handlers.end(), handler);
-        handlers.erase(position);
-      }
-    }
-  } while (true);
+    clear_finished();
+  }
 }
 
-Accepter::~Accepter() {}
+void Accepter::clear_finished() {
+  for (auto& handler : handlers) {
+    if (handler->finish()) {
+      handler->join();
+      delete handler;
+      auto position = std::find(handlers.begin(), handlers.end(), handler);
+      handlers.erase(position);
+    }
+  }
+}
+
+void Accepter::stop() {
+  keep_accepting = false;
+  sv.stop();
+}
+
+Accepter::~Accepter() {
+  for (auto& handler : handlers) {
+    handler->stop();
+    handler->join();
+    delete handler;
+  }
+}

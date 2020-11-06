@@ -7,10 +7,12 @@ class Accepter : public Thread {
   Socket& sv;
   Resources resources;
   std::vector<ClientHandler*> handlers;
-  bool alive = true;
+  bool keep_accepting = true;
+  void clear_finished();
 
  public:
   Accepter(Socket& sk);
   void run() override;
+  void stop();
   ~Accepter();
 };

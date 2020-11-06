@@ -25,6 +25,7 @@ class Socket {
   int connect_to_sv();
   int send_msg(std::string msg, int len);
   int recv_msg(std::string& buffer);
+  void stop();
 
   Socket(Socket&& other);
   Socket& operator=(Socket&& other);

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 
-Socket::Socket() {}
+Socket::Socket() : file_d(-1) {}
 
 /* Servidor */
 Socket::Socket(const char* port, int queue) {
@@ -113,6 +113,11 @@ int Socket::recv_msg(std::string& buffer) {
 }
 
 void Socket::stop_sending() { shutdown(file_d, SHUT_WR); }
+
+void Socket::stop() {
+  shutdown(file_d, SHUT_RDWR);
+  close(file_d);
+}
 
 Socket::~Socket() {
   if (file_d != -1) {

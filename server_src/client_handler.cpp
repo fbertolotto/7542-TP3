@@ -42,3 +42,8 @@ void ClientHandler::show_command() {
   std::cout << pp.get_method() << " " << pp.get_resource() << " "
             << pp.get_protocol() << "\n";
 }
+
+void ClientHandler::stop() {
+  sk.stop();
+  finished = true;
+}
