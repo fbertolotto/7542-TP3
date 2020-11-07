@@ -19,4 +19,5 @@ void WebServer::start() { acceptator.start(); }
 void WebServer::stop() {
   acceptator.stop();
   acceptator.join();
+  sv.stop();
 }

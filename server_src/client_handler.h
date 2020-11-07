@@ -17,7 +17,6 @@ class ClientHandler : public Thread {
   MessageHandler mh;
   std::atomic_bool finished;
   void execute_method();
-  void send_to_client(std::string msg);
   void show_command();
 
  public:

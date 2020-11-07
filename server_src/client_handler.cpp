@@ -1,5 +1,7 @@
 #include "client_handler.h"
 
+#include <unistd.h>
+
 #include <iostream>
 
 ClientHandler::ClientHandler(Socket& client, Resources& res)
@@ -13,7 +15,7 @@ void ClientHandler::run() {
   pp.process(msg);
   show_command();
   execute_method();
-  finished = true;
+  if (!finished) stop();
 }
 
 void ClientHandler::execute_method() {
@@ -29,16 +31,7 @@ void ClientHandler::execute_method() {
     response = msg->get_message();
     delete msg;
   }
-  if (!finished) {
-    sk.send_msg(response, response.size());
-    sk.stop_sending();
-  }
-}
-
-void ClientHandler::send_to_client(std::string msg) {
-  std::string success = "HTTP 200 OK\n\n";
-  success.append(msg);
-  sk.send_msg(success, success.size());
+  sk.send_msg(response, response.size());
 }
 
 void ClientHandler::show_command() {
@@ -47,6 +40,6 @@ void ClientHandler::show_command() {
 }
 
 void ClientHandler::stop() {
-  sk.stop();
   finished = true;
+  sk.stop();
 }

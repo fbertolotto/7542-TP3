@@ -119,8 +119,4 @@ void Socket::stop() {
   close(file_d);
 }
 
-Socket::~Socket() {
-  if (file_d != -1) {
-    close(file_d);
-  }
-}
+Socket::~Socket() {}
