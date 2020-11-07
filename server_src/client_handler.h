@@ -22,9 +22,9 @@ class ClientHandler : public Thread {
  public:
   ClientHandler(Socket& client, Resources& res);
   void run();
-  bool finish() { return finished; }
+  bool finish();
   void stop();
-  ~ClientHandler() {}
+  ~ClientHandler();
 };
 
 #endif

@@ -15,7 +15,6 @@ void Accepter::run() {
     clear_finished();
   }
   for (auto& handler : handlers) {
-    handler->stop();
     handler->join();
     delete handler;
   }

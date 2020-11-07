@@ -9,13 +9,15 @@ ClientHandler::ClientHandler(Socket& client, Resources& res)
   sk = std::move(client);
 }
 
+bool ClientHandler::finish() { return finished; }
+
 void ClientHandler::run() {
   std::string msg;
   sk.recv_msg(msg);
   pp.process(msg);
   show_command();
   execute_method();
-  if (!finished) stop();
+  finished = true;
 }
 
 void ClientHandler::execute_method() {
@@ -32,6 +34,7 @@ void ClientHandler::execute_method() {
     delete msg;
   }
   sk.send_msg(response, response.size());
+  sk.stop_sending();
 }
 
 void ClientHandler::show_command() {
@@ -39,7 +42,4 @@ void ClientHandler::show_command() {
             << pp.get_protocol() << "\n";
 }
 
-void ClientHandler::stop() {
-  finished = true;
-  sk.stop();
-}
+ClientHandler::~ClientHandler() { sk.stop(); }
