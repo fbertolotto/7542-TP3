@@ -7,11 +7,9 @@
 
 class MessageGetRoot : public Message {
  public:
-  MessageGetRoot(std::string msg) { text = msg; }
-  std::string get_message() override {
-    return "HTTP 200 OK\nContent-Type: text/html\n\n";
-  }
-  ~MessageGetRoot() {}
+  MessageGetRoot(std::string msg);
+  std::string get_message() override;
+  ~MessageGetRoot();
 };
 
 #endif

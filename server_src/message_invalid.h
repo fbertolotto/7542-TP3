@@ -7,11 +7,9 @@
 
 class MessageInvalid : public Message {
  public:
-  MessageInvalid(std::string msg) { text = msg; }
-  std::string get_message() override {
-    return "HTTP 405 METHOD NOT ALLOWED\n\n";
-  }
-  ~MessageInvalid() {}
+  MessageInvalid(std::string msg);
+  std::string get_message() override;
+  ~MessageInvalid();
 };
 
 #endif

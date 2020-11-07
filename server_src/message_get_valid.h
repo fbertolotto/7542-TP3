@@ -7,9 +7,9 @@
 
 class MessageGetValid : public Message {
  public:
-  MessageGetValid(std::string msg) { text = msg; }
-  std::string get_message() override { return ("HTTP 200 OK\n\n" + text); }
-  ~MessageGetValid() {}
+  MessageGetValid(std::string msg);
+  std::string get_message() override;
+  ~MessageGetValid();
 };
 
 #endif

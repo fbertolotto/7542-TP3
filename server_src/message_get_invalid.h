@@ -7,9 +7,9 @@
 
 class MessageGetInvalid : public Message {
  public:
-  MessageGetInvalid(std::string msg) { text = msg; }
-  std::string get_message() override { return "HTTP 404 NOT FOUND\n\n"; }
-  ~MessageGetInvalid() {}
+  MessageGetInvalid(std::string msg);
+  std::string get_message() override;
+  ~MessageGetInvalid();
 };
 
 #endif

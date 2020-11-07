@@ -7,9 +7,9 @@
 
 class MessagePostInvalid : public Message {
  public:
-  MessagePostInvalid(std::string msg) { text = msg; }
-  std::string get_message() override { return "HTTP 403 FORBIDDEN\n\n"; }
-  ~MessagePostInvalid() {}
+  MessagePostInvalid(std::string msg);
+  std::string get_message() override;
+  ~MessagePostInvalid();
 };
 
 #endif
