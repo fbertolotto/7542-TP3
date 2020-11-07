@@ -29,8 +29,10 @@ void ClientHandler::execute_method() {
     response = msg->get_message();
     delete msg;
   }
-  sk.send_msg(response, response.size());
-  sk.stop_sending();
+  if (!finished) {
+    sk.send_msg(response, response.size());
+    sk.stop_sending();
+  }
 }
 
 void ClientHandler::send_to_client(std::string msg) {
@@ -45,7 +47,6 @@ void ClientHandler::show_command() {
 }
 
 void ClientHandler::stop() {
-  Lock M(m);
   sk.stop();
   finished = true;
 }

@@ -13,6 +13,11 @@ void Accepter::run() {
     handler->start();
     clear_finished();
   }
+  for (auto& handler : handlers) {
+    handler->stop();
+    handler->join();
+    delete handler;
+  }
 }
 
 void Accepter::clear_finished() {
@@ -31,10 +36,4 @@ void Accepter::stop() {
   sv.stop();
 }
 
-Accepter::~Accepter() {
-  for (auto& handler : handlers) {
-    handler->stop();
-    handler->join();
-    delete handler;
-  }
-}
+Accepter::~Accepter() {}
