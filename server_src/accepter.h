@@ -1,3 +1,4 @@
+#include <atomic>
 #include <vector>
 
 #include "client_handler.h"
@@ -7,7 +8,7 @@ class Accepter : public Thread {
   Socket& sv;
   Resources resources;
   std::vector<ClientHandler*> handlers;
-  bool keep_accepting = true;
+  std::atomic_bool keep_accepting;
   void clear_finished();
 
  public:

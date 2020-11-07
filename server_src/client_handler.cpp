@@ -2,7 +2,8 @@
 
 #include <iostream>
 
-ClientHandler::ClientHandler(Socket& client, Resources& res) : resources(res) {
+ClientHandler::ClientHandler(Socket& client, Resources& res)
+    : resources(res), finished(true) {
   sk = std::move(client);
 }
 
@@ -44,6 +45,7 @@ void ClientHandler::show_command() {
 }
 
 void ClientHandler::stop() {
+  Lock M(m);
   sk.stop();
   finished = true;
 }

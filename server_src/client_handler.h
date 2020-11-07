@@ -1,7 +1,10 @@
 #ifndef CLIENT_HANDLER
 #define CLIENT_HANDLER
 
+#include <atomic>
+
 #include "../common_src/socket.h"
+#include "lock.h"
 #include "message_handler.h"
 #include "protocol_processor.h"
 #include "resources.h"
@@ -13,7 +16,8 @@ class ClientHandler : public Thread {
   Resources& resources;
   ProtocolProcessor pp;
   MessageHandler mh;
-  bool finished = false;
+  std::mutex m;
+  std::atomic_bool finished;
   void execute_method();
   void send_to_client(std::string msg);
   void show_command();
