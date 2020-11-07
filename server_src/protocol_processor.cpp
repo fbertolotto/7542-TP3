@@ -46,7 +46,8 @@ void ProtocolProcessor::set_command(std::string command) {
 }
 
 void ProtocolProcessor::set_body(std::string body) {
-  this->body += body + "\n";
+  if (this->body.size() != 0) this->body += "\n";
+  this->body += body;
 }
 
 std::vector<std::string> ProtocolProcessor::get_lines(std::string msg) {
