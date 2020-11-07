@@ -3,7 +3,7 @@
 #include <iostream>
 
 ClientHandler::ClientHandler(Socket& client, Resources& res)
-    : resources(res), finished(true) {
+    : resources(res), finished(false) {
   sk = std::move(client);
 }
 
