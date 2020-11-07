@@ -1,9 +1,5 @@
 #include "client_handler.h"
 
-#include <unistd.h>
-
-#include <iostream>
-
 ClientHandler::ClientHandler(Socket& client, Resources& res)
     : resources(res), finished(false) {
   sk = std::move(client);
