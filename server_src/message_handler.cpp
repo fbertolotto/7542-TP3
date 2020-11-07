@@ -6,10 +6,13 @@ Message* MessageHandler::create_message(std::string method,
                                         std::string resource,
                                         Resources& resources) {
   /* GET ROOT */
-  if (method == "GET" && resource == "/") return new MessageGetRoot("Hola");
+  if (method == "GET" && resource == "/") {
+    std::string body = resources.get_resource(resource);
+    return new MessageGetRoot(body);
+  }
 
   /* GET RECURSO */
-  else if (method == "GET" && resource != "/") {
+  else if (method == "GET") {
     std::string body = resources.get_resource(resource);
     if (body.size() == 0)
       return new MessageGetInvalid("");

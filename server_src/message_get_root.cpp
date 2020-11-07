@@ -5,6 +5,6 @@
 MessageGetRoot::MessageGetRoot(std::string msg) { text = msg; }
 
 std::string MessageGetRoot::get_message() {
-  return "HTTP 200 OK\nContent-Type: text/html\n\n";
+  return ("HTTP 200 OK\nContent-Type: text/html\n\n" + text);
 }
 MessageGetRoot::~MessageGetRoot() {}
