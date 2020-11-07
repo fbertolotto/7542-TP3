@@ -2,7 +2,8 @@
 
 #include <algorithm>
 
-Accepter::Accepter(Socket& sk) : sv(sk), keep_accepting(true) {}
+Accepter::Accepter(Socket& sk, Resources& rs)
+    : sv(sk), resources(rs), keep_accepting(true) {}
 
 void Accepter::run() {
   while (keep_accepting) {
