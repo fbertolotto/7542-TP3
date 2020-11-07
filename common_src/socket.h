@@ -1,3 +1,6 @@
+#ifndef SOCKET
+#define SOCKET
+
 #include <netdb.h>
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -31,3 +34,5 @@ class Socket {
   Socket& operator=(Socket&& other);
   ~Socket();
 };
+
+#endif
