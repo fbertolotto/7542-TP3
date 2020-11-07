@@ -22,13 +22,12 @@ void ClientHandler::execute_method() {
 
   /* POST RECURSO */
   std::string response;
-  if (method == "POST" && resource != "/") {
+  if (method == "POST" && resource != "/")
     resources.add_resource(resource, pp.get_body());
-  } else {
-    Message* msg = mh.create_message(method, resource, resources);
-    response = msg->get_message();
-    delete msg;
-  }
+    
+  Message* msg = mh.create_message(method, resource, resources);
+  response = msg->get_message();
+  delete msg;
   sk.send_msg(response, response.size());
   sk.stop_sending();
 }

@@ -9,6 +9,7 @@
 #include "message_get_valid.h"
 #include "message_invalid.h"
 #include "message_post_invalid.h"
+#include "message_post_valid.h"
 #include "resources.h"
 
 class MessageHandler {
