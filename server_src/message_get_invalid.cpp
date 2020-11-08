@@ -5,7 +5,7 @@
 MessageGetInvalid::MessageGetInvalid(std::string msg) { text = msg; }
 
 std::string MessageGetInvalid::get_message() {
-  return "HTTP 404 NOT FOUND\n\n";
+  return "HTTP/1.1 404 NOT FOUND\n\n";
 }
 
 MessageGetInvalid::~MessageGetInvalid() {}

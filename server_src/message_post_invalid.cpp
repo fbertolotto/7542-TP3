@@ -5,7 +5,7 @@
 MessagePostInvalid::MessagePostInvalid(std::string msg) { text = msg; }
 
 std::string MessagePostInvalid::get_message() {
-  return "HTTP 403 FORBIDDEN\n\n";
+  return "HTTP/1.1 403 FORBIDDEN\n\n";
 }
 
 MessagePostInvalid::~MessagePostInvalid() {}

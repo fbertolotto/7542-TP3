@@ -27,6 +27,6 @@ Message* MessageHandler::create_message(std::string method,
     std::string body = resources.get_resource(resource);
     return new MessagePostValid(body);
   } else {
-    return new MessageInvalid("");
+    return new MessageInvalid(method);
   }
 }
