@@ -109,15 +109,17 @@ void Socket::send_msg(std::string msg, int len) {
 }
 
 std::string Socket::recv_msg() {
-  std::string text;
+  std::stringstream text;
   int bytes = 1;
   while (bytes > 0) {
-    std::vector<char> tmp_buf(64);
-    bytes = recv(file_d, tmp_buf.data(), tmp_buf.size(), 0);
+    char tmp_buf[64];
+    bytes = recv(file_d, tmp_buf, 64, 0);
     if (bytes == -1) throw ConnectionError("Falló la recepción del mensaje\n");
-    text.append(tmp_buf.begin(), tmp_buf.end());
+    for (int i = 0; i < bytes; i++) {
+      text << tmp_buf[i];
+    }
   }
-  return text;
+  return text.str();
 }
 
 void Socket::stop_sending() { shutdown(file_d, SHUT_WR); }
