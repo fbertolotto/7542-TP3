@@ -13,9 +13,12 @@ int main(int argc, char** argv) {
     server();
     std::string buffer;
     while (buffer != EXIT_CHAR) std::getline(std::cin, buffer);
-    return 0;
-  } catch (const std::exception& error) {
+  } catch (const FileError& error) {
     std::cout << error.what();
-    return 0;
+  } catch (const ConnectionError& error) {
+    std::cout << error.what();
+  } catch (...) {
+    std::cout << "Error desconocido\n";
   }
+  return 0;
 }
