@@ -8,6 +8,8 @@
 #include <iterator>
 #include <string>
 
+#include "file_error.h"
+
 class FileReader {
  private:
   std::ifstream file;

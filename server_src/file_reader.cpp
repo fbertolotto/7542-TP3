@@ -4,6 +4,7 @@
 
 FileReader::FileReader(const std::string& file_name) {
   this->file.open(file_name);
+  if (!this->file.is_open()) throw FileError("Falló la apertura del archivo");
 }
 
 std::string FileReader::read_all() {

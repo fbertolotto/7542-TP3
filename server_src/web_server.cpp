@@ -15,8 +15,9 @@ void WebServer::show_content() {
   std::cout << file_content;
 }
 
-void WebServer::start() { acceptator.start(); }
-void WebServer::stop() {
+void WebServer::operator()() { acceptator.start(); }
+
+WebServer::~WebServer() {
   acceptator.stop();
   acceptator.join();
   sv.stop();

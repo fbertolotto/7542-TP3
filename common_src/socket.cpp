@@ -77,6 +77,7 @@ void Socket::_bind() {
 void Socket::_listen(int queue_size) {
   int res = listen(file_d, queue_size);
   if (res == -1) throw ConnectionError("Falló el listen\n");
+  freeaddrinfo(info);
 }
 
 void Socket::accept_client(Socket& client) {

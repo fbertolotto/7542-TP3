@@ -8,15 +8,15 @@ Accepter::Accepter(Socket& sk, Resources& rs)
 void Accepter::run() {
   while (keep_accepting) {
     Socket client = Socket();
-    if (sv.accept_client(client)) continue;
-    ClientHandler* handler = new ClientHandler(client, resources);
-    handlers.push_back(handler);
-    handler->start();
+    try {
+      sv.accept_client(client);
+      ClientHandler* handler = new ClientHandler(client, resources);
+      handlers.push_back(handler);
+      handler->start();
+    } catch (const ConnectionError& err) {
+      continue;
+    }
     clear_finished();
-  }
-  for (auto& handler : handlers) {
-    handler->join();
-    delete handler;
   }
 }
 
@@ -36,4 +36,9 @@ void Accepter::stop() {
   sv.stop();
 }
 
-Accepter::~Accepter() {}
+Accepter::~Accepter() {
+  for (auto& handler : handlers) {
+    handler->join();
+    delete handler;
+  }
+}

@@ -9,11 +9,16 @@
 #define EXIT_CHAR "q"
 
 int main(int argc, char** argv) {
-  if (argc < 3) return 0;
-  WebServer server(argv[1], argv[2]);
-  server.start();
-  std::string buffer;
-  while (buffer != EXIT_CHAR) std::getline(std::cin, buffer);
-  server.stop();
-  return 0;
+  if (argc != 3) return 1;
+  try {
+    WebServer server(argv[1], argv[2]);
+    server();
+    std::string buffer;
+    while (buffer != EXIT_CHAR) std::getline(std::cin, buffer);
+    return 0;
+
+  } catch (const std::exception& error) {
+    std::cout << error.what();
+    return 0;
+  }
 }

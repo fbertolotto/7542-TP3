@@ -14,7 +14,7 @@ class WebServer {
 
  public:
   WebServer(const char* port, const std::string& file_name);
+  void operator()();
   void show_content();
-  void start();
-  void stop();
+  ~WebServer();
 };

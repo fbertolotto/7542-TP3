@@ -1,23 +1,20 @@
-#include <iostream>
+
 #include <sstream>
 #include <string>
 
-#include "../common_src/socket.h"
+#include "client.h"
+
 int main(int argc, char** argv) {
-  Socket client("localhost", "8080");
-  client.connect_to_sv();
-  std::stringstream text;
-  std::string stdin_buf;
-  while (getline(std::cin, stdin_buf)) {
-    text << stdin_buf << "\n";
+  if (argc != 3) return 0;
+  try {
+    Client client(argv[1], argv[2]);
+    std::stringstream text;
+    std::string stdin_buf;
+    while (getline(std::cin, stdin_buf)) text << stdin_buf << "\n";
+    client.send_msg(text.str());
+    client.show_response();
+  } catch (const ConnectionError& error) {
+    std::cout << error.what();
   }
-
-  std::string order = text.str();
-  client.send_msg(order, order.size());
-
-  client.stop_sending();
-  std::string buffer;
-  client.recv_msg(buffer);
-  std::cout << buffer;
   return 0;
 }
