@@ -2,7 +2,7 @@
 
 #include <string>
 
-MessageGetRoot::MessageGetRoot(std::string msg) { text = msg; }
+MessageGetRoot::MessageGetRoot(const std::string& msg) { text = msg; }
 
 std::string MessageGetRoot::get_message() {
   return ("HTTP/1.1 200 OK\nContent-Type: text/html\n\n" + text);

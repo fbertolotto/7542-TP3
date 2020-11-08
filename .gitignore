@@ -33,3 +33,10 @@
 *.o-tsan
 tp-tsan
 tp
+client_stdin
+server
+client
+client_tsan
+server_tsan
+*.json
+index.html

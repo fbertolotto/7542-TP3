@@ -2,7 +2,7 @@
 
 #include <string>
 
-MessageGetInvalid::MessageGetInvalid(std::string msg) { text = msg; }
+MessageGetInvalid::MessageGetInvalid(const std::string& msg) { text = msg; }
 
 std::string MessageGetInvalid::get_message() {
   return "HTTP/1.1 404 NOT FOUND\n\n";

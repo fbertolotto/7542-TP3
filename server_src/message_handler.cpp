@@ -7,11 +7,10 @@ Message* MessageHandler::create_message(std::string method,
                                         Resources& resources) {
   /* GET ROOT */
   if (method == "GET" && resource == "/") {
-    std::string body = resources.get_resource(resource);
+    const std::string body = resources.get_resource(resource);
     return new MessageGetRoot(body);
-  }
-  /* GET RECURSO */
-  else if (method == "GET") {
+
+  } else if (method == "GET") { /* GET RECURSO */
     std::string body = resources.get_resource(resource);
     if (body.size() == 0) {
       return new MessageGetInvalid("");
@@ -24,7 +23,7 @@ Message* MessageHandler::create_message(std::string method,
     return new MessagePostInvalid("");
 
   } else if (method == "POST") {
-    std::string body = resources.get_resource(resource);
+    const std::string body = resources.get_resource(resource);
     return new MessagePostValid(body);
   } else {
     return new MessageInvalid(method);

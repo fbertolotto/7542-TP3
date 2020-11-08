@@ -1,3 +1,6 @@
+#ifndef WEB_SERVER
+#define WEB_SERVER
+
 #include <string>
 
 #include "../common_src/socket.h"
@@ -15,6 +18,7 @@ class WebServer {
  public:
   WebServer(const char* port, const std::string& file_name);
   void operator()();
-  void show_content();
   ~WebServer();
 };
+
+#endif  // WEB_SERVER

@@ -20,4 +20,4 @@ class MessageHandler {
   ~MessageHandler() {}
 };
 
-#endif
+#endif  // MESSAGE_HANDLER

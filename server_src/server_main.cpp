@@ -1,6 +1,4 @@
-#include <cstring>
 #include <iostream>
-#include <sstream>
 #include <string>
 
 #include "web_server.h"
@@ -16,7 +14,6 @@ int main(int argc, char** argv) {
     std::string buffer;
     while (buffer != EXIT_CHAR) std::getline(std::cin, buffer);
     return 0;
-
   } catch (const std::exception& error) {
     std::cout << error.what();
     return 0;

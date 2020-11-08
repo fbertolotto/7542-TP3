@@ -1,10 +1,9 @@
 #include "protocol_processor.h"
 
-#include <iostream>
 #include <string>
 #include <vector>
 
-void ProtocolProcessor::process(std::string msg) {
+void ProtocolProcessor::process(const std::string& msg) {
   std::vector<std::string> lines = get_lines(msg);
   start(lines);
 }
@@ -41,15 +40,15 @@ std::vector<std::string> ProtocolProcessor::split(std::string msg,
   return buffer;
 }
 
-void ProtocolProcessor::set_command(std::string command) {
+void ProtocolProcessor::set_command(const std::string& command) {
   commands = split(command, " ", true);
 }
 
-void ProtocolProcessor::set_body(std::string body) {
+void ProtocolProcessor::set_body(const std::string& body) {
   if (this->body.size() != 0) this->body += "\n";
   this->body += body;
 }
 
-std::vector<std::string> ProtocolProcessor::get_lines(std::string msg) {
+std::vector<std::string> ProtocolProcessor::get_lines(const std::string& msg) {
   return split(msg, "\n", false);
 }

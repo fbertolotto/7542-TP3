@@ -1,15 +1,15 @@
 #include "client_handler.h"
 
-ClientHandler::ClientHandler(Socket& client, Resources& res)
-    : resources(res), finished(false) {
-  sk = std::move(client);
-}
+#include <string>
+#include <utility>
+
+ClientHandler::ClientHandler(Socket client, Resources& res)
+    : sk(std::move(client)), resources(res), finished(false) {}
 
 bool ClientHandler::finish() { return finished; }
 
 void ClientHandler::run() {
-  std::string msg;
-  sk.recv_msg(msg);
+  const std::string msg = sk.recv_msg();
   pp.process(msg);
   show_command();
   execute_method();
@@ -24,7 +24,7 @@ void ClientHandler::execute_method() {
   std::string response;
   if (method == "POST" && resource != "/")
     resources.add_resource(resource, pp.get_body());
-    
+
   Message* msg = mh.create_message(method, resource, resources);
   response = msg->get_message();
   delete msg;

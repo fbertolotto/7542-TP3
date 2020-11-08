@@ -7,9 +7,9 @@
 
 class MessageGetValid : public Message {
  public:
-  MessageGetValid(std::string msg);
+  explicit MessageGetValid(const std::string& msg);
   std::string get_message() override;
   ~MessageGetValid();
 };
 
-#endif
+#endif  // MESSAGE_GET_VALID

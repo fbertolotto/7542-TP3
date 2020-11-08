@@ -1,5 +1,5 @@
-#ifndef FILE_READER_H
-#define FILE_READER_H
+#ifndef FILE_READER
+#define FILE_READER
 
 #include <bits/stdc++.h>
 
@@ -16,7 +16,7 @@ class FileReader {
 
  public:
   /* Init del lector de archivos */
-  FileReader(const std::string& file_name);
+  explicit FileReader(const std::string& file_name);
 
   /* Lee hasta EOF y lo guarda en el buffer. */
   std::string read_all();
@@ -35,4 +35,4 @@ class FileReader {
   ~FileReader();
 };
 
-#endif  // FILE_READER_H
+#endif  // FILE_READER

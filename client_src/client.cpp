@@ -9,11 +9,7 @@ void Client::send_msg(std::string msg) {
   sk.stop_sending();
 }
 
-void Client::show_response() {
-  std::string buffer;
-  sk.recv_msg(buffer);
-  std::cout << buffer;
-}
+void Client::show_response() { std::cout << sk.recv_msg(); }
 
 Client::~Client() {
   if (working) sk.stop();

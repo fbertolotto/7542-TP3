@@ -13,4 +13,4 @@ class Message {
   virtual ~Message() {}
 };
 
-#endif
+#endif  // MESSAGE

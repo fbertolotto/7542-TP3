@@ -1,3 +1,6 @@
+#ifndef CLIENT
+#define CLIENT
+
 #include <string>
 
 #include "../common_src/socket.h"
@@ -13,3 +16,5 @@ class Client {
   void show_response();
   ~Client();
 };
+
+#endif  // CLIENT

@@ -1,5 +1,5 @@
-#ifndef SOCKET
-#define SOCKET
+#ifndef SOCKET_H
+#define SOCKET_H
 
 #include <netdb.h>
 #include <sys/socket.h>
@@ -29,12 +29,12 @@ class Socket {
   void stop_sending();
   void accept_client(Socket& client);
   void send_msg(std::string msg, int len);
-  void recv_msg(std::string& buffer);
+  std::string recv_msg();
   void stop();
 
   Socket(Socket&& other);
-  Socket& operator=(Socket&& other);
+  Socket& operator=(Socket&& other) = delete;
   ~Socket();
 };
 
-#endif
+#endif  // SOCKET_H

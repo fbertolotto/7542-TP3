@@ -1,6 +1,7 @@
 #include "accepter.h"
 
 #include <algorithm>
+#include <utility>
 
 Accepter::Accepter(Socket& sk, Resources& rs)
     : sv(sk), resources(rs), keep_accepting(true) {}
@@ -10,7 +11,7 @@ void Accepter::run() {
     Socket client = Socket();
     try {
       sv.accept_client(client);
-      ClientHandler* handler = new ClientHandler(client, resources);
+      ClientHandler* handler = new ClientHandler(std::move(client), resources);
       handlers.push_back(handler);
       handler->start();
     } catch (const ConnectionError& err) {

@@ -2,7 +2,7 @@
 
 #include <string>
 
-MessageInvalid::MessageInvalid(std::string msg) { text = msg; }
+MessageInvalid::MessageInvalid(const std::string& msg) { text = msg; }
 
 std::string MessageInvalid::get_message() {
   return ("HTTP/1.1 405 METHOD NOT ALLOWED\n\n" + text +

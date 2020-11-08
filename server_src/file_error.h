@@ -15,4 +15,4 @@ class FileError : public std::exception {
   virtual ~FileError() noexcept;
 };
 
-#endif
+#endif  // FILE_ERROR

@@ -2,11 +2,12 @@
 
 #include <cstdint>
 #include <cstring>
-#include <iostream>
+#include <sstream>
+#include <utility>
 #include <vector>
 
 /* Socket vació invalido */
-Socket::Socket() : file_d(-1) {}
+Socket::Socket() : file_d(-1), info(NULL) {}
 
 /* Servidor */
 Socket::Socket(const char* port, int queue) {
@@ -40,12 +41,9 @@ Socket::Socket(const char* host, const char* port) {
   }
 }
 
-Socket::Socket(Socket&& other) { this->file_d = std::move(other.file_d); }
-
-Socket& Socket::operator=(Socket&& other) {
+Socket::Socket(Socket&& other) {
   this->file_d = std::move(other.file_d);
-  other.file_d = -1;
-  return *this;
+  this->info = NULL;
 }
 
 void Socket::_set_net_flags(struct addrinfo* hints) {
@@ -110,14 +108,16 @@ void Socket::send_msg(std::string msg, int len) {
   }
 }
 
-void Socket::recv_msg(std::string& buffer) {
+std::string Socket::recv_msg() {
+  std::string text;
   int bytes = 1;
   while (bytes > 0) {
     std::vector<char> tmp_buf(64);
     bytes = recv(file_d, tmp_buf.data(), tmp_buf.size(), 0);
     if (bytes == -1) throw ConnectionError("Falló la recepción del mensaje\n");
-    buffer.append(tmp_buf.begin(), tmp_buf.end());
+    text.append(tmp_buf.begin(), tmp_buf.end());
   }
+  return text;
 }
 
 void Socket::stop_sending() { shutdown(file_d, SHUT_WR); }

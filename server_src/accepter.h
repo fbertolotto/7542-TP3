@@ -1,3 +1,6 @@
+#ifndef ACCEPTER
+#define ACCEPTER
+
 #include <atomic>
 #include <vector>
 
@@ -17,3 +20,5 @@ class Accepter : public Thread {
   void stop();
   ~Accepter();
 };
+
+#endif  // ACCEPTER

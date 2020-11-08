@@ -7,9 +7,9 @@
 
 class MessageGetRoot : public Message {
  public:
-  MessageGetRoot(std::string msg);
+  explicit MessageGetRoot(const std::string& msg);
   std::string get_message() override;
   ~MessageGetRoot();
 };
 
-#endif
+#endif  // MESSAGE_GET_ROOT

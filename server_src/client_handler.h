@@ -20,11 +20,11 @@ class ClientHandler : public Thread {
   void show_command();
 
  public:
-  ClientHandler(Socket& client, Resources& res);
-  void run();
+  ClientHandler(Socket client, Resources& res);
+  void run() override;
   bool finish();
   void stop();
   ~ClientHandler();
 };
 
-#endif
+#endif  // CLIENT_HANDLER

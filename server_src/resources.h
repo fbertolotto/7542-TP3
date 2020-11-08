@@ -2,8 +2,9 @@
 #define RESOURCES
 
 #include <map>
-#include <mutex>
 #include <string>
+
+#include "lock.h"
 
 class Resources {
  private:
@@ -11,9 +12,8 @@ class Resources {
   std::mutex m;
 
  public:
-  void add_resource(std::string resource, std::string body);
-  std::string get_resource(std::string resource);
-  void show_all();
+  void add_resource(const std::string& resource, const std::string& body);
+  std::string get_resource(const std::string& resource);
 };
 
-#endif
+#endif  // RESOURCES

@@ -1,5 +1,5 @@
-#ifndef LOCK_H
-#define LOCK_H
+#ifndef LOCK
+#define LOCK
 
 #include <mutex>
 
@@ -12,4 +12,4 @@ class Lock {
   ~Lock();
 };
 
-#endif  // LOCKH
+#endif  // LOCK

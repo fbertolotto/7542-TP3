@@ -10,25 +10,25 @@
 target = tp
 target-tsan = tp-tsan
 
-# ExtensiÃ³n de los archivos a compilar (c para C, cpp o cc o cxx para C++).
+# Extensión de los archivos a compilar (c para C, cpp o cc o cxx para C++).
 extension = cpp
 
-# Archivos con el cÃ³digo fuente que componen el ejecutable. Si no se especifica,
-# toma todos los archivos con la extensiÃ³n mencionada. Para especificar hay que
-# descomentar la lÃ­nea (quitarle el '#' del principio).
+# Archivos con el código fuente que componen el ejecutable. Si no se especifica,
+# toma todos los archivos con la extensión mencionada. Para especificar hay que
+# descomentar la línea (quitarle el '#' del principio).
 # NOTA: No poner cabeceras (.h).
 #fuentes = entrada.cpp
 
-# Si usa funciones de math.h, descomentar (quitar el '#' a) la siguiente lÃ­nea.
+# Si usa funciones de math.h, descomentar (quitar el '#' a) la siguiente línea.
 #math = si
 
-# Si usa threads, descomentar (quitar el '#' a) la siguiente lÃ­nea.
+# Si usa threads, descomentar (quitar el '#' a) la siguiente línea.
 threads = si
 
-# Si es un programa GTK+, descomentar (quitar el '#' a) la siguiente lÃ­nea.
+# Si es un programa GTK+, descomentar (quitar el '#' a) la siguiente línea.
 #gtk = si
 
-# Si es un programa gtkmm, descomentar (quitar el '#' a) la siguiente lÃ­nea.
+# Si es un programa gtkmm, descomentar (quitar el '#' a) la siguiente línea.
 #gtkmm = si
 
 # Descomentar si se quiere ver como se invoca al compilador
@@ -99,10 +99,10 @@ ifdef static
 LDFLAGS += -static
 endif
 
-# Se reutilizan los flags de C para C++ tambiÃ©n
+# Se reutilizan los flags de C para C++ también
 CXXFLAGS += $(CFLAGS)
 
-# Se usa enlazador de c++ si es cÃ³digo no C.
+# Se usa enlazador de c++ si es código no C.
 ifeq ($(extension), c)
 CFLAGS += -std=$(CSTD)
 LD = $(CC)
@@ -141,11 +141,36 @@ COMPILERFLAGS-TSAN = $(COMPILERFLAGS) -fsanitize=thread
 # REGLAS
 #########
 
-all: clean client server
+all: client server
 
 o_common_files = $(patsubst %.$(extension),%.o,$(fuentes_common))
 o_client_files = $(patsubst %.$(extension),%.o,$(fuentes_client))
 o_server_files = $(patsubst %.$(extension),%.o,$(fuentes_server))
+
+o_common_files_tsan = $(patsubst %.$(extension),%.o-tsan,$(fuentes_common))
+o_client_files_tsan = $(patsubst %.$(extension),%.o-tsan,$(fuentes_client))
+o_server_files_tsan = $(patsubst %.$(extension),%.o-tsan,$(fuentes_server))
+
+all_tsan: client_tsan server_tsan
+
+client_tsan: $(o_common_files_tsan) $(o_client_files_tsan)
+	echo "Client files: $(o_client_files_tsan)"
+	@if [ -z "$(o_client_files_tsan)" ]; \
+	then \
+		echo "No hay archivos de entrada en el directorio actual para el cliente. Recuerde que los archivos deben respetar la forma 'client*.$(extension)' y que no se aceptan directorios anidados."; \
+		if [ -n "$(directorios)" ]; then echo "Directorios encontrados: $(directorios)"; fi; \
+		false; \
+	fi >&2
+	$(LD) $(o_common_files_tsan) $(o_client_files_tsan) -o client_tsan $(LDFLAGS-TSAN)
+
+server_tsan: $(o_common_files_tsan) $(o_server_files_tsan)
+	@if [ -z "$(o_server_files_tsan)" ]; \
+	then \
+		echo "No hay archivos de entrada en el directorio actual para el servidor. Recuerde que los archivos deben respetar la forma 'server*.$(extension)' y que no se aceptan directorios anidados."; \
+		if [ -n "$(directorios)" ]; then echo "Directorios encontrados: $(directorios)"; fi; \
+		false; \
+	fi >&2
+	$(LD) $(o_common_files_tsan) $(o_server_files_tsan) -o server_tsan $(LDFLAGS-TSAN)
 
 client: $(o_common_files) $(o_client_files)
 	echo "Client files: $(o_client_files)"
@@ -166,8 +191,15 @@ server: $(o_common_files) $(o_server_files)
 	fi >&2
 	$(LD) $(o_common_files) $(o_server_files) -o server $(LDFLAGS)
 
+%.o-tsan: %.$(extension)
+	$(COMPILER) $(COMPILERFLAGS-TSAN) -o $@ -c $<
+
+%.o: %.$(extension)
+	$(COMPILER) $(COMPILERFLAGS) -o $@ -c $<
+
 clean: clean-obj
-	$(RM) -f $(o_common_files) $(o_client_files) $(o_server_files) $(target-tsan) client server
+	$(RM) -f $(o_common_files) $(o_client_files) $(o_server_files) $(o_common_files_tsan) $(o_client_files_tsan) $(o_server_files_tsan) $(target-tsan) client server client_tsan server_tsan
 
 clean-obj:
 	$(RM) $(o_files) $(o-tsan_files)
+
