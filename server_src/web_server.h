@@ -16,8 +16,20 @@ class WebServer {
   FileReader file_reader;
 
  public:
+  /* Init del servidor web. Recibe el puerto en donde se hosteara y el nombre
+  del archivo que contiene el contenido root */
   WebServer(const char* port, const std::string& file_name);
+
+  /* Comienza a funcion el servidor */
   void operator()();
+
+  /* Se prohíben las copias y los movimientos */
+  WebServer& operator=(const WebServer&) = delete;
+  WebServer& operator=(WebServer&&) = delete;
+  WebServer(const WebServer&) = delete;
+  WebServer(WebServer&&) = delete;
+
+  /* Destructor del servidor web*/
   ~WebServer();
 };
 

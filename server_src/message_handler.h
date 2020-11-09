@@ -14,9 +14,14 @@
 
 class MessageHandler {
  public:
+  /* Init del handler de mensajes */
   MessageHandler() {}
+
+  /* Crea el mensaje correspondiente al metodo segun el recurso */
   Message* create_message(std::string method, std::string resource,
                           Resources& resources);
+
+  /* Destructor del handler de mensajes */
   ~MessageHandler() {}
 };
 

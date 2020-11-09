@@ -21,15 +21,11 @@ class FileReader {
   /* Lee hasta EOF y lo guarda en el buffer. */
   std::string read_all();
 
-  /* No se permiten constructores diferentes al default. */
+  /* Se prohíben las copias y los movimientos */
   FileReader(const FileReader&) = delete;
   FileReader(FileReader&&) = delete;
-
-  /* No se permiten copias por asignación. */
   FileReader& operator=(const FileReader&) = delete;
-
-  /* Se permite por movimiento. */
-  FileReader& operator=(FileReader&& other);
+  FileReader& operator=(FileReader&&) = delete;
 
   /* Destructor del lector de archivos. */
   ~FileReader();
