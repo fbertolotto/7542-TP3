@@ -16,5 +16,4 @@ void WebServer::operator()() { acceptator.start(); }
 WebServer::~WebServer() {
   acceptator.stop();
   acceptator.join();
-  sv.stop();
 }

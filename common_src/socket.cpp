@@ -44,6 +44,7 @@ Socket::Socket(const char* host, const char* port) {
 Socket::Socket(Socket&& other) {
   this->file_d = std::move(other.file_d);
   this->info = NULL;
+  other.file_d = -1;
 }
 
 void Socket::_set_net_flags(struct addrinfo* hints) {
@@ -124,9 +125,11 @@ std::string Socket::recv_msg() {
 
 void Socket::stop_sending() { shutdown(file_d, SHUT_WR); }
 
-void Socket::stop() {
-  shutdown(file_d, SHUT_RDWR);
-  close(file_d);
-}
+void Socket::stop() { shutdown(file_d, SHUT_RDWR); }
 
-Socket::~Socket() {}
+Socket::~Socket() {
+  if (file_d != -1) {
+    shutdown(file_d, SHUT_RDWR);
+    close(file_d);
+  }
+}
