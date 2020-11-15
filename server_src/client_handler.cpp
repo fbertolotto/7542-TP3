@@ -1,7 +1,10 @@
 #include "client_handler.h"
 
+#include <sstream>
 #include <string>
 #include <utility>
+
+#define RECV_BUFFER_LEN 64
 
 ClientHandler::ClientHandler(Socket client, Resources& res)
     : sk(std::move(client)), resources(res), finished(false) {}
@@ -9,7 +12,15 @@ ClientHandler::ClientHandler(Socket client, Resources& res)
 bool ClientHandler::finish() { return finished; }
 
 void ClientHandler::run() {
-  const std::string msg = sk.recv_msg();
+  std::stringstream text;
+  char buffer[RECV_BUFFER_LEN];
+  int bytes;
+  while ((bytes = sk.recv_msg(buffer, RECV_BUFFER_LEN)) != 0) {
+    for (int i = 0; i < bytes; i++) {
+      text << buffer[i];
+    }
+  }
+  const std::string msg = text.str();
   pp.process(msg);
   show_command();
   execute_method();
@@ -28,7 +39,7 @@ void ClientHandler::execute_method() {
   Message* msg = mh.create_message(method, resource, resources);
   response = msg->get_message();
   delete msg;
-  sk.send_msg(response, response.size());
+  sk.send_msg(response.c_str(), response.size());
   sk.stop_sending();
 }
 

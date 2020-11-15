@@ -16,7 +16,7 @@ class Client {
   Client(char* host, char* port);
 
   /* Envia un mensaje al servidor y cierra el canal de escritura */
-  void send_msg(std::string msg);
+  void send_msg(std::string& msg);
 
   /* Muestra por salida estandar la respuseta del servidor */
   void show_response();

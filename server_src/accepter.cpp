@@ -8,7 +8,7 @@ Accepter::Accepter(Socket& sk, Resources& rs)
 
 void Accepter::run() {
   while (keep_accepting) {
-    Socket client = Socket();
+    Socket client;
     try {
       sv.accept_client(client);
       ClientHandler* handler = new ClientHandler(std::move(client), resources);

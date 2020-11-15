@@ -49,10 +49,10 @@ class Socket {
   void accept_client(Socket& client);
 
   /* Envia un mensaje a traves del socket. Recibe el mensaje y el largo*/
-  void send_msg(std::string msg, int len);
+  void send_msg(const char* msg, size_t len);
 
   /* Recibe el mensaje y lo devuelve como string */
-  std::string recv_msg();
+  int recv_msg(char* buf, size_t buf_len);
 
   /* Finaliza el socket, apaga ambos canales y cierra el socket */
   void stop();

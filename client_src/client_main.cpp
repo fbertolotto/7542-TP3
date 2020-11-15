@@ -11,7 +11,8 @@ int main(int argc, char** argv) {
     std::stringstream text;
     std::string stdin_buf;
     while (getline(std::cin, stdin_buf)) text << stdin_buf << "\n";
-    client.send_msg(text.str());
+    std::string msg = text.str();
+    client.send_msg(msg);
     client.show_response();
   } catch (const ConnectionError& error) {
     std::cout << error.what();

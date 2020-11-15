@@ -80,9 +80,7 @@ void Socket::_listen(int queue_size) {
 }
 
 void Socket::accept_client(Socket& client) {
-  struct sockaddr adrr;
-  socklen_t adrrlen = (socklen_t)sizeof(adrr);
-  int res = accept(file_d, &adrr, &adrrlen);
+  int res = accept(file_d, NULL, NULL);
   if (res == -1) throw ConnectionError("No se pudo aceptar al cliente\n");
   client.file_d = res;
 }
@@ -99,8 +97,8 @@ void Socket::_connect_to_sv() {
   freeaddrinfo(info);
 }
 
-void Socket::send_msg(std::string msg, int len) {
-  int total_bytes = 0;
+void Socket::send_msg(const char* msg, size_t len) {
+  size_t total_bytes = 0;
   while (total_bytes < len) {
     int bytes =
         send(file_d, &msg[total_bytes], len - total_bytes, MSG_NOSIGNAL);
@@ -109,18 +107,16 @@ void Socket::send_msg(std::string msg, int len) {
   }
 }
 
-std::string Socket::recv_msg() {
+int Socket::recv_msg(char* buf, size_t buf_len) {
   std::stringstream text;
+  size_t total_bytes = 0;
   int bytes = 1;
-  while (bytes > 0) {
-    char tmp_buf[64];
-    bytes = recv(file_d, tmp_buf, 64, 0);
+  while (bytes > 0 && total_bytes < buf_len) {
+    bytes = recv(file_d, &buf[total_bytes], buf_len - total_bytes, 0);
     if (bytes == -1) throw ConnectionError("Falló la recepción del mensaje\n");
-    for (int i = 0; i < bytes; i++) {
-      text << tmp_buf[i];
-    }
+    total_bytes += bytes;
   }
-  return text.str();
+  return total_bytes;
 }
 
 void Socket::stop_sending() { shutdown(file_d, SHUT_WR); }
