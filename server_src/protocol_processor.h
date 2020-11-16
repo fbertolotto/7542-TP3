@@ -12,7 +12,7 @@ class ProtocolProcessor {
   /* Devuelve un vector con las palabras separadas del mensaje especificadas por
   el delimitador. El parametro booleano se utiliza para determinar si las lineas
   vacias sonignoradas o agregadas */
-  std::vector<std::string> split(std::string msg, std::string delimiter,
+  std::vector<std::string> split(std::string msg, char delimiter,
                                  bool ignore_empty);
   /* Comienza el procesado de las lineas */
   void start(std::vector<std::string> lines);

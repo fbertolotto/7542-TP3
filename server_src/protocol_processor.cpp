@@ -1,5 +1,6 @@
 #include "protocol_processor.h"
 
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -26,22 +27,20 @@ std::string ProtocolProcessor::get_protocol() { return commands[2]; }
 std::string ProtocolProcessor::get_body() { return body; }
 
 std::vector<std::string> ProtocolProcessor::split(std::string msg,
-                                                  std::string delimiter,
+                                                  char delimiter,
                                                   bool ignore_empty) {
-  size_t init = 0, delim_pos;
   std::vector<std::string> buffer;
-  while ((delim_pos = msg.find(delimiter, init)) != std::string::npos) {
-    std::string word = msg.substr(init, delim_pos - init);
-    init = delim_pos + 1;
-    if (word.length() == 0 and ignore_empty) continue;
-    buffer.push_back(word);
+  std::stringstream ss(msg);
+  std::string s;
+  while (std::getline(ss, s, delimiter)) {
+    if (ignore_empty && s.size() == 0) continue;
+    buffer.push_back(s);
   }
-  buffer.push_back(msg.substr(init));
   return buffer;
 }
 
 void ProtocolProcessor::set_command(const std::string& command) {
-  commands = split(command, " ", true);
+  commands = split(command, ' ', true);
 }
 
 void ProtocolProcessor::set_body(const std::string& body) {
@@ -50,5 +49,5 @@ void ProtocolProcessor::set_body(const std::string& body) {
 }
 
 std::vector<std::string> ProtocolProcessor::get_lines(const std::string& msg) {
-  return split(msg, "\n", false);
+  return split(msg, '\n', false);
 }
