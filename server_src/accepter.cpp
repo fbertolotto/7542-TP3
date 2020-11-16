@@ -21,15 +21,20 @@ void Accepter::run() {
   }
 }
 
+static bool is_null(ClientHandler* ch) { return !ch; }
+
 void Accepter::clear_finished() {
+  int i = 0;
   for (auto& handler : handlers) {
     if (handler->finish()) {
       handler->join();
       delete handler;
-      auto position = std::find(handlers.begin(), handlers.end(), handler);
-      handlers.erase(position);
+      handlers[i] = nullptr;
     }
+    i++;
   }
+  handlers.erase(std::remove_if(handlers.begin(), handlers.end(), is_null),
+                 handlers.end());
 }
 
 void Accepter::stop() {
