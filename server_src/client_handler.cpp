@@ -44,9 +44,10 @@ void ClientHandler::execute_method() {
 }
 
 void ClientHandler::show_command() {
-  std::string msg = pp.get_method() + " " + pp.get_resource() + " " +
-                    pp.get_protocol() + "\n";
-  std::cout << msg;
+  std::stringstream msg;
+  msg << pp.get_method() << " " << pp.get_resource() << " " << pp.get_protocol()
+      << "\n";
+  std::cout << msg.str();
 }
 
 ClientHandler::~ClientHandler() {}
