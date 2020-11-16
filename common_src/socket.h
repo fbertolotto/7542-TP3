@@ -21,12 +21,13 @@ class Socket {
   void _set_net_flags(struct addrinfo* hints);
   /* Itera los resultados del sistema operativo en busca
   de lograr una conexión del socket */
-  void _start();
-  /* Bindea un socket al puerto correspondiente */
-  void _bind();
-  /* Pone el socket en modo de escucha, recibe la cantidad
-  maxima de clientes posibles en espera simultáneos */
-  void _listen(int queue_size);
+
+  /* Itera los resultados del sistema operativo en busca
+  de lograr una conexión del socket, lo bindea al puerto correspondiente
+  y pone el socket en modo de escucha, recibe la cantidad
+  máxima de clientes posibles en espera simultáneos */
+  void _start_bind_listen(int queue_size);
+
   /* Conecta el socket al host correspondiente*/
   void _connect_to_sv();
 

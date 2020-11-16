@@ -17,9 +17,7 @@ Socket::Socket(const char* port, int queue) {
   if (get_info)
     throw ConnectionError("No se encontro informacion de la direccion\n");
   try {
-    _start();
-    _bind();
-    _listen(queue);
+    _start_bind_listen(queue);
   } catch (const ConnectionError& error) {
     freeaddrinfo(info);
     throw;
@@ -42,7 +40,7 @@ Socket::Socket(const char* host, const char* port) {
 }
 
 Socket::Socket(Socket&& other) {
-  this->file_d = std::move(other.file_d);
+  this->file_d = other.file_d;
   this->info = NULL;
   other.file_d = -1;
 }
@@ -54,28 +52,21 @@ void Socket::_set_net_flags(struct addrinfo* hints) {
   hints->ai_flags = 0;
 }
 
-void Socket::_start() {
+void Socket::_start_bind_listen(int queue_size) {
   struct addrinfo* data;
   int tmp_sk = -1;
+  int val = 1;
   for (data = info; data != NULL; data = data->ai_next) {
     tmp_sk = socket(data->ai_family, data->ai_socktype, data->ai_protocol);
-    if (tmp_sk != -1) break;
+    if (tmp_sk == -1) continue;
+    setsockopt(tmp_sk, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val));
+    int res_bind = bind(tmp_sk, info->ai_addr, info->ai_addrlen);
+    int res_listen = listen(tmp_sk, queue_size);
+    if (!res_bind && !res_listen) break;
   }
   if (tmp_sk == -1)
     throw ConnectionError("Falló la inicialización del socket\n");
-  int val = 1;
   file_d = tmp_sk;
-  setsockopt(file_d, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val));
-}
-
-void Socket::_bind() {
-  int res = bind(file_d, info->ai_addr, info->ai_addrlen);
-  if (res == -1) throw ConnectionError("Falló el bindeo del puerto\n");
-}
-
-void Socket::_listen(int queue_size) {
-  int res = listen(file_d, queue_size);
-  if (res == -1) throw ConnectionError("Falló el listen\n");
   freeaddrinfo(info);
 }
 
@@ -87,13 +78,16 @@ void Socket::accept_client(Socket& client) {
 
 void Socket::_connect_to_sv() {
   struct addrinfo* sv;
+  int tmp_sk = -1;
   int connected = -1;
   for (sv = info; sv != NULL; sv = sv->ai_next) {
-    _start();
-    connected = connect(file_d, sv->ai_addr, sv->ai_addrlen);
+    tmp_sk = socket(sv->ai_family, sv->ai_socktype, sv->ai_protocol);
+    if (tmp_sk == -1) continue;
+    connected = connect(tmp_sk, sv->ai_addr, sv->ai_addrlen);
     if (connected != -1) break;
   }
   if (connected == -1) throw ConnectionError("No se encontró el servidor\n");
+  file_d = tmp_sk;
   freeaddrinfo(info);
 }
 
