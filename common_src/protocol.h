@@ -12,7 +12,7 @@ class Protocol {
  public:
   /* Init del protocolo, recibe el socket por donde recibirá
   la información */
-  Protocol(Socket& socket);
+  explicit Protocol(Socket& socket);
 
   /* Devuelve una cadena con la información completa */
   std::string get_full_msg();
