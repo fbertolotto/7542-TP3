@@ -102,7 +102,6 @@ void Socket::send_msg(const char* msg, size_t len) {
 }
 
 int Socket::recv_msg(char* buf, size_t buf_len) {
-  std::stringstream text;
   size_t total_bytes = 0;
   int bytes = 1;
   while (bytes > 0 && total_bytes < buf_len) {
