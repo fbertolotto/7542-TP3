@@ -4,23 +4,13 @@
 #include <string>
 #include <utility>
 
-#define RECV_BUFFER_LEN 64
-
 ClientHandler::ClientHandler(Socket client, Resources& res)
-    : sk(std::move(client)), resources(res), finished(false) {}
+    : sk(std::move(client)), resources(res), protocol(sk), finished(false) {}
 
 bool ClientHandler::finish() { return finished; }
 
 void ClientHandler::run() {
-  std::stringstream text;
-  char buffer[RECV_BUFFER_LEN];
-  int bytes;
-  while ((bytes = sk.recv_msg(buffer, RECV_BUFFER_LEN)) != 0) {
-    for (int i = 0; i < bytes; i++) {
-      text << buffer[i];
-    }
-  }
-  const std::string msg = text.str();
+  const std::string msg = protocol.get_full_msg();
   pp.process(msg);
   show_command();
   execute_method();

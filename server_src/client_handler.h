@@ -3,6 +3,7 @@
 
 #include <atomic>
 
+#include "../common_src/protocol.h"
 #include "../common_src/socket.h"
 #include "message_handler.h"
 #include "protocol_processor.h"
@@ -14,6 +15,7 @@ class ClientHandler : public Thread {
   Socket sk;
   Resources& resources;
   ProtocolProcessor pp;
+  Protocol protocol;
   MessageHandler mh;
   std::atomic_bool finished;
   /* Ejecuta el comando recibido */

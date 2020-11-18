@@ -3,11 +3,13 @@
 
 #include <string>
 
+#include "../common_src/protocol.h"
 #include "../common_src/socket.h"
 
 class Client {
  private:
   Socket sk;
+  Protocol protocol;
   bool working = false;
 
  public:
