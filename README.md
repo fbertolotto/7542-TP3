@@ -37,7 +37,7 @@ La estructura general del programa se divide en varios módulos.
 
 El programa principal creara un hilo aceptador (`accepter`) y se quedara esperando por una "q" para ser finalizado.
 El aceptador se encargara de aceptar a los clientes, crear un hilo procesador(`client_handler`) y enviarle los recursos necesarios para que pueda procesar.
-El hilo procesador (`client_handler`), se comunicara con el cliente a través del `socket` obtenido por el `aceptador`, recibirá el mensaje a procesar, lo parseara, obtendrá los valores necesarios y en base a eso generara la instrucción. Una vez obtenida se analizara si es un POST /RECURSO; en caso positivo se procederá a guardar en los recursos del servidor, el cuerpo del mensaje. Si es negativo, se omitirá este paso y se procederá al siguiente, generar la respuesta.
+El hilo procesador (`client_handler`), se comunicara con el cliente a través del `socket` obtenido por el `aceptador`, recibirá el mensaje a procesar a través del `protocolo`, lo parseara, obtendrá los valores necesarios y en base a eso generara la instrucción. Una vez obtenida se analizara si es un POST /RECURSO; en caso positivo se procederá a guardar en los recursos del servidor, el cuerpo del mensaje. Si es negativo, se omitirá este paso y se procederá al siguiente, generar la respuesta.
 Para generar la respuesta el procesador delegara la responsabilidad al `message_handler`. Se le enviara el método, el recurso solicitado y los recursos disponibles, así el `message_handler` generara el mensaje especifico para la situación.
 Una vez generado, el mensaje se enviara a través del socket hacia el cliente, para que este pueda imprimirlo por salida estándar.
 
